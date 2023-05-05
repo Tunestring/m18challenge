@@ -31,9 +31,10 @@ const userSchema = new Schema(
     {
       toJSON: {
         virtuals: true,
+        getters: true,
       },
       id: false,
     }
   );
 
-  //add virtual property here?
+  //add virtual property here???
