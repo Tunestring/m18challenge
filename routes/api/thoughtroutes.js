@@ -4,6 +4,8 @@ const {
   getThoughtbyId,
   createThoughts,
   deleteThought
+
+
 } = require('../../controllers/userController');
 
 // /api/users
