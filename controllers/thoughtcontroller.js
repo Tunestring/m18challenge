@@ -1,8 +1,7 @@
 const { Thought, User } = require('../models');
 
 const thoughtController = {
-
-    // GET all Thoughts
+  // GET all Thoughts
   async getAllThoughts(req, res) {
     try {
       const thoughtData = await Thought.find().populate('reactions');
@@ -12,7 +11,8 @@ const thoughtController = {
       res.status(500).json(err);
     }
   },
-    //GET thought by ID
+
+  // GET thought by ID
   async getThoughtById(req, res) {
     try {
       const { thoughtId } = req.params;
@@ -29,6 +29,7 @@ const thoughtController = {
       res.status(500).json({ message: 'Error! Please try again.' });
     }
   },
+
   // Create a new thought
   async createThought(req, res) {
     try {
@@ -56,12 +57,14 @@ const thoughtController = {
       res.status(500).json({ message: 'Error! Please try again.' });
     }
   },
-    // Finds Thought
+
+  // Find and update a thought by ID
   async findAndUpdateThought(req, res) {
     try {
       const { id } = req.params;
       const { thoughtText } = req.body;
-    // Updates Thought
+
+      // Updates Thought
       const thought = await Thought.findByIdAndUpdate(
         id,
         { thoughtText },
@@ -78,7 +81,7 @@ const thoughtController = {
       res.status(500).json({ message: 'Error! Please try again.' });
     }
   },
-  
+
   // Delete a thought by ID
   async deleteThought(req, res) {
     try {
