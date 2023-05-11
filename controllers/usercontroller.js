@@ -11,8 +11,7 @@ module.exports = {
   },
   async getUserById(req, res) {
     try {
-      const user = await User.findOne({ _id: req.params.userId })
-        .select('-__v');
+      const user = await User.findOne({ _id: req.params.userId });
 
       if (!user) {
         return res.status(404).json({ message: 'No user with that ID' });
@@ -24,7 +23,7 @@ module.exports = {
     }
   },
   // create a new user
-  async createUser(req, res) {
+  async createNewUser(req, res) {
     try {
       const dbUserData = await User.create(req.body);
       res.json(dbUserData);
