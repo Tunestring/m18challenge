@@ -1,31 +1,37 @@
 const { Schema, Types } = require('mongoose');
+const dateFormat = require('../utils/dateFormat');
 
+// Reaction Model Schema
 const reactionSchema = new Schema(
     {
         reactionId: {
             type: Schema.Types.ObjectId,
-            default: () => new Types.ObjectId(),
+            default: () => new Types.ObjectId()
         },
         reactionBody: {
-            type: String, 
+            type: String,
             required: true,
-            maxlength: 280
+            maxLength: 280
         },
-        username: { 
-            type: String, 
+        username: {
+            type: String,
             required: true
-        }, 
+        },
+        // getter method to format the timestamp
         createdAt: {
             type: Date,
             default: Date.now,
-            get: (date) => formatDate(date)
-        },
+            // format the date
+            get: createdAtVal => dateFormat(createdAtVal)
+        }
     },
     {
-      toJSON: {
-        virtuals: true,
-        getters: true
-      },
-      id: false
+        toJSON: {
+            getters: true
+        }
     }
-)
+);
+
+module.exports = reactionSchema;
+
+ 
