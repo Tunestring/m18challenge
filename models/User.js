@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const { thoughtSchema } = require('./Thought');
 
 // User Model Schema
 const userSchema = new Schema(
@@ -15,18 +16,8 @@ const userSchema = new Schema(
             unique: true, 
             match: [/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/, 'Enter a valid email address!']
         },
-        thoughts: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: 'thought',
-              },
-        ],
-        friends: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: 'user',
-              },
-        ]
+        thoughts: [thoughtSchema],
+        friends: [this]
     },
     {
       toJSON: {
@@ -37,4 +28,11 @@ const userSchema = new Schema(
     }
   );
 
-  //add virtual property here???
+  //added virtual property here
+  userSchema.virtual('friendCount').get(function() {
+    return this.friends.length;
+  });
+
+  const User = model('User', userSchema);
+
+  module.exports = User;
