@@ -31,4 +31,62 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+// update a user
+async updateUser(req, res) {
+  try {
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: req.params.userId },
+      req.body,
+      { new: true });
+
+      if (!updatedUser) {
+        return res.status(404).json({ message: 'No user with that ID' });
+      }
+
+      res.json(updatedUser);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
+
+  // delete a user
+  async deleteUser(req, res) {
+    try {
+      const deletedUser = await User.findOneAndDelete({ _id: req.params.userId });
+
+      if (!deletedUser) {
+        return res.status(404).json({ message: 'No user with that ID' });
+      } 
+
+      res.status(200).json(deletedUser);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
+
+  // add a friend
+  async addFriend(req, res) {
+    try {
+      const addedFriend = await User.findOneAndUpdate(
+        { _id: req.params.userId },
+        { $addToSet: { friends: req.params.friendId } },
+        { new: true }
+      );
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
+
+  // delete a friend
+  async deleteFriend(req, res) {
+    try {
+      const deletedFriend = await User.findOneAndUpdate(
+        { _id: req.params.userId },
+        { $pull: { friends: req.params.friendId } },
+        { new: true }
+      );
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  }
 };

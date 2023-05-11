@@ -57,7 +57,48 @@ const thoughtController = {
       res.status(500).json({ message: 'Error! Please try again.' });
     }
   },
-
+ async createReaction(req, res) {
+    try {
+      const { reactionBody } = req.body;
+      const { thoughtId } = req.params;
+  
+      const updatedThought = await Thought.findOneAndUpdate(
+        { _id: thoughtId },
+        { $push: { reactions: { reactionBody } } },
+        { new: true }
+      );
+  
+      if (!updatedThought) {
+        return res.status(404).json({ message: 'Thought not found' });
+      }
+  
+      res.status(200).json(updatedThought);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Failed to create reaction' });
+    }
+  },
+  async deleteReaction(req, res) {
+    try {
+      const { thoughtId, reactionId } = req.params;
+      const userId = req.user._id;
+  
+      const thought = await Thought.findByIdAndUpdate(
+        thoughtId,
+        { $pull: { reactions: { _id: reactionId, reactionAuthor: userId } } },
+        { new: true, runValidators: true }
+      );
+  
+      if (!thought) {
+        return res.status(404).json({ message: 'No thought found with this id!' });
+      }
+  
+      res.json({ message: 'Reaction deleted!' });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Failed to delete reaction!' });
+    }
+  },
   // Find and update a thought by ID
   async findAndUpdateThought(req, res) {
     try {
