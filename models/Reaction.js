@@ -17,11 +17,9 @@ const Reaction = new Schema(
             type: String,
             required: true
         },
-        // getter method to format the timestamp
         createdAt: {
             type: Date,
             default: Date.now,
-            // format the date
             get: createdAtVal => dateFormat(createdAtVal)
         }
     },

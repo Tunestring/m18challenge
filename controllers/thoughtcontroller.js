@@ -71,8 +71,7 @@ module.exports = {
       if (!thought) {
         return res.status(404).json({ error: 'Thought not found' });
       }
-  
-      // Remove the reference to the deleted thought from the associated user's thoughts array
+      
       await User.updateMany(
         { thoughts: thoughtId },
         { $pull: { thoughts: thoughtId } }

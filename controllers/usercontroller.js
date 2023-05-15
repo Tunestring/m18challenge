@@ -23,16 +23,16 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-  // create a new user
+
   async createNewUser(req, res) {
     try {
       const dbUserData = await User.create(req.body);
-      res.json(dbUserData); // Send the created user object instead of the string
+      res.json(dbUserData);
     } catch (err) {
       res.status(500).json(err);
     }
   },
-// update a user
+
 async updateUser(req, res) {
   try {
     const updatedUser = await User.findOneAndUpdate(
@@ -50,7 +50,7 @@ async updateUser(req, res) {
     }
   },
 
-// delete a user
+
 async deleteUser(req, res) {
   try {
     const deletedUser = await User.findOneAndDelete({ _id: req.params.userId });
@@ -72,7 +72,7 @@ async addFriend(req, res) {
       { $addToSet: { friends: req.params.friendId } },
       { new: true }
     );
-    res.json(addFriend); // Return the updated user object instead of a string
+    res.json(addFriend); 
   } catch (err) {
     res.status(500).json(err);
   }
