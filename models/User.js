@@ -1,41 +1,34 @@
 const { Schema, model } = require('mongoose');
-const { thoughtSchema } = require('./Thought');
+const thoughtSchema = require('./Thought');
 
-// User Model Schema
 const userSchema = new Schema(
-    {
-        username: { 
-            type: String, 
-            required: true, 
-            unique: true, 
-            trim: true
-        },
-        email: {
-            type: String, 
-            required: true, 
-            unique: true, 
-            match: [/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/, 'Enter a valid email address!']
-        },
-        thoughts: [thoughtSchema],
-        friends: [{
-          type: Schema.Types.ObjectId,
-          ref: 'User'
-        }]
+  {
+    username: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
     },
-    {
-      toJSON: {
-        virtuals: true,
-        getters: true,
-      },
-      id: false,
-    }
-  );
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      match: /(.)+@(.)+\.([a-z\.]){2,6}/,
+    },
+    thoughts: [{ type: Schema.Types.ObjectId, ref: 'Thought' }],
+    friends: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  },
+  {
+    toJSON: {
+      virtuals: true,
+    },
+  }
+);
 
-  //added virtual property here
-  userSchema.virtual('friendCount').get(function() {
-    return this.friends.length;
-  });
+userSchema.virtual('friendCount').get(function () {
+  return this.friends.length;
+});
 
-  const User = model('User', userSchema);
+const User = model('User', userSchema);
 
-  module.exports = User;
+module.exports = User;
